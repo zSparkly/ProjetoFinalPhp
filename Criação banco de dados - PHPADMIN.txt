@@ -1,0 +1,15 @@
+create database blog;
+
+CREATE TABLE cards (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  game_image VARCHAR(255) NOT NULL,
+  game_title VARCHAR(255) NOT NULL,
+  game_description TEXT NOT NULL
+);
+
+CREATE TABLE usuarios (
+  ID INT(11) AUTO_INCREMENT PRIMARY KEY,
+  email VARCHAR(80) NOT NULL,
+  senha VARCHAR(64) NOT NULL,
+  sit INT(1) NOT NULL
+);
