@@ -11,9 +11,19 @@
     <div class="logo">
         <img src="imagens/Logo.png" alt="Neoplay Logo">
     </div>
-    <?php include 'menu.php'; ?>
+
+
     <div class="auth-buttons">
-        <button class="sign-in" id="signInBtn">Sign In</button>
-        <button class="register" id="registerBtn">Register</button>
+        <?php
+        // Verifica se o usuário está logado
+        if (!isset($_SESSION['user_id'])) {  // Se o usuário NÃO estiver logado
+            // Exibe os botões de Sign In e Register
+            echo '<button class="sign-in" id="signInBtn">Sign In</button>';
+            echo '<button class="register" id="registerBtn">Register</button>';
+        } else {  // Se o usuário ESTIVER logado
+            // Exibe apenas o botão de Logout
+            echo '<a href="logout.php"><button class="logout">Logout</button></a>';
+        }
+        ?>
     </div>
 </header>

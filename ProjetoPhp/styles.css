@@ -22,27 +22,6 @@ header {
     box-shadow: 0 0 15px #3c3b3b;
 }
 
-.menu {
-    list-style: none;
-    display: flex;
-    gap: 30px;
-    background: linear-gradient(to right, #2c2c2c88, #33333367);
-    border-radius: 5px;
-    width: 600px;
-    height: 20px;
-    padding: 5px;
-}
-
-.menu li a {
-    text-decoration: none;
-    color: #00FFFF;
-    font-weight: bold;
-    transition: color 0.3s;
-}
-
-.menu li a:hover {
-    color: #FFD700;
-}
 
 .auth-buttons button {
     margin-left: 10px;
@@ -89,11 +68,24 @@ header {
     color: #1a1a1a;
 }
 
-
-.hero {
-    text-align:center;
-    padding: 50px 20px;
+.logout {
+    background: linear-gradient(to bottom, #FF4D4D, #991A1A); /* Gradiente vermelho */
+    color: #FFFFFF;
+    border: 2px solid #FF4D4D;
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-position 0.4s ease-in-out, color 0.4s ease-in-out;
+    background-size: 200% 200%;
+    background-position: right bottom;
 }
+
+.logout:hover {
+    background-position: left top;
+    color: #1a1a1a;
+}
+
 
 .cards {
     display: flex;
@@ -203,38 +195,7 @@ header {
     transform: scale(1.2);
 }
 
-/* Links */
-.footer-links {
-    display: flex;
-    gap: 50px;
-    flex-wrap: wrap;
-}
 
-.footer-column h4 {
-    font-size: 18px;
-    margin-bottom: 10px;
-    color: #00ffff;
-}
-
-.footer-column ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-}
-
-.footer-column ul li {
-    margin-bottom: 8px;
-}
-
-.footer-column ul li a {
-    text-decoration: none;
-    color: #00ffff;
-    transition: color 0.3s ease;
-}
-
-.footer-column ul li a:hover {
-    color: #ff007f;
-}
 .card-content p{
     color: #19173a;
 }

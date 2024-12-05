@@ -52,3 +52,24 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['email']) && isset($_PO
 // Fechar a conexão
 $conn->close();
 ?>
+
+<?php
+session_start();
+
+// Suponha que a validação do login foi bem-sucedida
+$_SESSION['logged_in'] = true; // Define a sessão como logada
+header("Location: index.php"); // Redireciona após o login
+exit();
+?>
+<?php
+session_start();
+
+// Após verificar que o login é bem-sucedido
+$_SESSION['logged_in'] = true;  // Marca o usuário como logado
+$_SESSION['user_id'] = $id;     // Armazena o ID do usuário na sessão (opcional)
+$_SESSION['user_email'] = $email; // Armazena o email do usuário na sessão (opcional)
+
+// Redireciona o usuário para a página inicial
+header("Location: index.php");
+exit();
+?>

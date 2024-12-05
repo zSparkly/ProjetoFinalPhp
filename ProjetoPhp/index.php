@@ -1,8 +1,23 @@
+<?php
+session_start();
+
+// Verifica se o usuário está logado
+$isLoggedIn = isset($_SESSION['user_id']);
+?>
+
+<!-- Exibir o cabeçalho com a condição do login -->
 <?php include 'templates/header.php'; ?>
+
+<main>
+    <?php if ($isLoggedIn): ?>
+        <h1>Bem-vindo, <?php echo $_SESSION['user_email']; ?>!</h1>
+    <?php else: ?>
+        <p>Você não está logado.</p>
+    <?php endif; ?>
+</main>
 <?php include 'config.php'; ?>
 
 <main>
-    <section class="hero">
 
     </section>
 
@@ -92,9 +107,15 @@
     };
 </script>
 
-<!-- Botão de Publicar -->
-<button id="publishBtn" class="publish-btn">Publicar Card</button>
-
+<?php
+// Verifica se o usuário está logado
+if (isset($_SESSION['user_id'])) {  // Se o usuário estiver logado
+    // Exibe o botão de Publicar Card
+    echo '<div class="publish-button">';
+    echo '<button id="publishBtn" class="publish-btn">Publicar Card</button>';
+    echo '</div>';
+}
+?>
 <!-- Modal de Publicação -->
 <div id="publishModal" class="modal">
     <div class="modal-content">
@@ -115,6 +136,9 @@
     </div>
 </div>
 
+
+
+
 <script>
     const closePublish = document.getElementById('closePublish');
 
@@ -129,6 +153,8 @@
     }
 </script>
 
+</main>
+
 <?php
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_FILES['gameImage']) && isset($_POST['gameTitle']) && isset($_POST['gameDescription'])) {
     $image = $_FILES['gameImage'];
@@ -139,23 +165,59 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_FILES['gameImage']) && isset
     $imagePath = 'imagens/' . $image['name'];
     move_uploaded_file($image['tmp_name'], $imagePath);
 
-    // Exibir o card recém-publicado dentro de um contêiner .cards
-    echo '
-    <div class="cards">
-        <div class="card">
-            <img src="' . $imagePath . '" alt="' . $title . '">
-            <div class="card-content">
-                <h3 class="card-title">' . $title . '</h3>
-                <p>' . $description . '</p>
-                <button class="card-button">Explore</button>
+    // Inserir os dados no banco de dados
+    $stmt = $conn->prepare("INSERT INTO cards (game_image, game_title, game_description) VALUES (?, ?, ?)");
+    $stmt->bind_param("sss", $imagePath, $title, $description);  // "sss" para strings
+
+    if ($stmt->execute()) {
+        echo '';
+    } else {
+        echo '' . $stmt->error;
+    }
+
+    // Fechar a preparação
+    $stmt->close();
+}
+?>
+<?php
+// Selecionar todos os cards do banco de dados
+$result = $conn->query("SELECT * FROM cards");
+
+if ($result->num_rows > 0) {
+    // Exibir os cards
+    while ($row = $result->fetch_assoc()) {
+        echo '
+        <div class="cards">
+            <div class="card">
+                <img src="' . $row['game_image'] . '" alt="' . $row['game_title'] . '">
+                <div class="card-content">
+                    <h3 class="card-title">' . $row['game_title'] . '</h3>
+                    <p>' . $row['game_description'] . '</p>
+                    <button class="card-button">Explore</button>
+                </div>
             </div>
-        </div>
-    </div>';
+        </div>';
+    }
+} else {
+    echo 'Nenhum card encontrado.';
 }
 
+
+// Fechar a conexão
+$result->close();
 ?>
+<script>
+    // Obter o botão de logout
+    const logoutBtn = document.getElementById('logoutBtn');
 
+    // Verificar se o botão de logout existe (ou seja, se o usuário está logado)
+    if (logoutBtn) {
+        logoutBtn.onclick = function() {
+            // Redireciona o usuário para o logout.php, que irá destruir a sessão
+            window.location.href = 'logout.php';
+        }
+    }
+</script>
 
-</main>
 
 <?php include 'templates/footer.php'; ?>
